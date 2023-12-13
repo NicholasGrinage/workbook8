@@ -9,7 +9,7 @@
   <body>
     <header>
       <nav>
-        <a href="add.html" class="active">Users</a>
+        <a href="index.html">Users</a>
       </nav>
     </header>
     <main>
@@ -54,7 +54,7 @@
           },
           body: JSON.stringify(user),
         }).then(function () {
-          window.location.href = "add.html";
+          window.location.href = "index.html";
         });
       }
 
@@ -64,7 +64,7 @@
           method: "DELETE",
           // body: JSON.stringify(user),
         }).then(function () {
-          window.location.href = "add.html";
+          window.location.href = "index.html";
         });
       }
 
