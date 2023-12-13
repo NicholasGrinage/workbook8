@@ -15,38 +15,62 @@ function loadUsersTable(users) {
     let cell3 = row.insertCell();
     cell3.innerText = user.username;
 
+    let deleteUserButton = buildDeleteUserButton();
     let cell4 = row.insertCell();
-    let button = document.createElement("button");
-    button.setAttribute("onclick", "showConfirm(1)");
-    button.innerText = "Delete User";
-    cell4.appendChild(button);
-    let confirm = document.createElement("p");
-    confirm.id = "confirm";
-    let buttonYes = document.createElement("button");
-    buttonYes.innerText = "Yes";
-    console.log(user.id);
-    buttonYes.setAttribute("onclick", `deleteUser(${user.id})`);
-    // alert(user.id)
-    buttonYes.onclick = () => {
-      // deleteUser(user.id);
-    
-    };
-    let buttonNo = document.createElement("button");
-    buttonNo.setAttribute("onclick", "showConfirm(2)");
-    buttonNo.innerText = "NO";
-    confirm.innerText = `Are you sure?`;
-    confirm.style = "display: none";
-    confirm.appendChild(buttonYes);
-    confirm.appendChild(buttonNo);
-    cell4.appendChild(confirm);
+    cell4.appendChild(deleteUserButton);
+
+    let confirmParagraph = buildConfirmParagraph(user);
+
+    cell4.appendChild(confirmParagraph);
+
+    deleteUserButton.onclick = () => showConfirm(1, confirmParagraph);
   }
 }
 
-function showConfirm(display) {
+function buildDeleteUserButton() {
+  let deleteUserButton = document.createElement("button");
+  deleteUserButton.innerText = "Delete User";
+  return deleteUserButton;
+}
+
+function buildConfirmParagraph(user) {
+  let confirmParagraph = document.createElement("p");
+  confirmParagraph.id = "confirm";
+  confirmParagraph.style = "display: none";
+
+  let buttonYes = buildButtonYes(user);
+
+  let buttonNo = buildButtonNo(confirmParagraph);
+
+  confirmParagraph.innerText = `Are you sure?`;
+
+  confirmParagraph.appendChild(buttonYes);
+  confirmParagraph.appendChild(buttonNo);
+  return confirmParagraph;
+}
+
+function buildButtonNo(confirm) {
+  let buttonNo = document.createElement("button");
+  buttonNo.setAttribute("onclick", "showConfirm(2)");
+  buttonNo.innerText = "NO";
+  buttonNo.onclick = () => showConfirm(2, confirm);
+  return buttonNo;
+}
+
+function buildButtonYes(user) {
+  let buttonYes = document.createElement("button");
+  buttonYes.innerText = "Yes";
+  buttonYes.onclick = () => {
+    deleteUser(user.id);
+  };
+  return buttonYes;
+}
+
+function showConfirm(display, confirm) {
   if (display == 1) {
-    document.getElementById("confirm").style.display = "inline";
+    confirm.style.display = "inline";
   } else if (display == 2) {
-    document.getElementById("confirm").style.display = "none";
+    confirm.style.display = "none";
   }
 }
 
