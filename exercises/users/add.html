@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Username</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="add.html" class="active">Users</a>
+      </nav>
+    </header>
+    <main>
+      <h3>Add User</h3>
+      <form>
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" />
+
+        <label for="emailInput">Email:</label>
+        <input type="text" id="emailInput" />
+
+        <label for="usernameInput">Username:</label>
+        <input type="text" id="usernameInput" />
+
+        <button id="saveButton" type="button">Save</button>
+        <button id="deleteButton" type="button">Delete</button>
+      </form>
+    </main>
+
+    <script>
+      const deleteButton = document.querySelector("#deleteButton");
+      const saveButton = document.querySelector("#saveButton");
+      const nameInput = document.querySelector("#nameInput");
+      const emailInput = document.querySelector("#emailInput");
+      const usernameInput = document.querySelector("#usernameInput");
+
+      function formToUser() {
+        let user = {
+          name: nameInput.value,
+          email: emailInput.value,
+          username: usernameInput.value,
+        };
+        return user;
+      }
+
+      function addUser() {
+        const user = formToUser();
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).then(function () {
+          window.location.href = "add.html";
+        });
+      }
+
+      function deleteUser() {
+        const user = formToUser();
+        fetch("http://localhost:3000/users/", {
+          method: "DELETE",
+          // body: JSON.stringify(user),
+        }).then(function () {
+          window.location.href = "add.html";
+        });
+      }
+
+      saveButton.onclick = addUser;
+      deleteButton.onclick = deleteUser;
+    </script>
+  </body>
+</html>

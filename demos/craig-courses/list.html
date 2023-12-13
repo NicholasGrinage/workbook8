@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courses</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <a href="list.html">Courses</a>
+    </header>
+    <main>
+      <a href="add.html">Add</a>
+      <table>
+        <thead>
+          <tr>
+            <td>Course Name</td>
+            <td>Department</td>
+          </tr>
+        </thead>
+        <tbody id="coursesTableBody"></tbody>
+      </table>
+    </main>
+    <script>
+      //html elements
+      const coursesTableBody = document.querySelector("#coursesTableBody");
+
+      //functions
+      function loadsCourses() {
+        fetch("http://localhost:3000/courses")
+          .then(function parseBody(response) {
+            return response.json();
+          })
+          .then(function (courses) {
+            displayCourses(courses);
+          });
+      }
+
+      function displayCourses(courses) {
+        for (const course of courses) {
+          buildCourseTableRow(course);
+        }
+      }
+
+      function buildCourseTableRow(course) {
+        let row = coursesTableBody.insertRow();
+
+        let td1 = row.insertCell();
+        td1.innerText = course.courseName;
+
+        let td2 = row.insertCell();
+        td2.innerText = course.dept;
+      }
+
+      //wire-up
+      window.onload = function initialize() {
+        loadsCourses();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Nick",
+  "username": "Elwyn.Skiles",
+  "email": "Telly.Hoeger@billy.biz",
+  "address": {
+    "street": "Rex Trail",
+    "suite": "Suite 280",
+    "city": "Howemouth",
+    "zipcode": "58804-1099",
+    "geo": {
+      "lat": "24.8918",
+      "lng": "21.8984"
+    }
+  },
+  "phone": "412.67.8397",
+  "website": "elvis.io",
+  "company": {
+    "name": "Johns Group",
+    "catchPhrase": "Configurable multimedia task-force",
+    "bs": "generate enterprise e-tailers"
+  }
+}

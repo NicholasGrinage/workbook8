@@ -1,0 +1,11 @@
+POST  http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "dept": "sdsd",
+    "courseNum": 199,
+    "courseName": "kaskjsa",
+    "instructor": "Rasokasok",
+    "startDate": "akjsakns",
+    "numDays": 10
+  }

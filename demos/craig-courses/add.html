@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courses</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <a href="list.html">Courses</a>
+    </header>
+    <main>
+      <h3>Add Course</h3>
+      <form>
+        <label for="departmentInput">Department</label>
+        <input type="text" id="departmentInput" />
+
+        <label for="courseNumberInput"> Course Number</label>
+        <input type="text" id="courseNumberInput" />
+
+        <label for="courseNameInput">Course Name</label>
+        <input type="text" id="courseNameInput" />
+
+        <label for="instructorInput">Instructor</label>
+        <input type="text" id="instructorInput" />
+
+        <button id="addButton" type="button">Add</button>
+      </form>
+    </main>
+    <script>
+      const addButton = document.querySelector("#addButton");
+      const departmentInput = document.querySelector("#departmentInput");
+      const courseNumberInput = document.querySelector("#courseNumberInput");
+      const courseNameInput = document.querySelector("#courseNameInput");
+      const instructorInput = document.querySelector("#instructorInput");
+
+      function formToUser() {
+        let user = {
+          dept: departmentInput.value,
+          courseNum: courseNumberInput.value,
+          courseName: courseNameInput.value,
+          instructor: instructorInput.value,
+        };
+        return user;
+      }
+
+      function addCourse() {
+        const user = formToUser();
+        fetch("http://localhost:3000/courses/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).then(function () {
+          window.location.href = "list.html";
+        });
+      }
+
+      addButton.onclick = addCourse;
+    </script>
+  </body>
+</html>
