@@ -1,5 +1,10 @@
 //get html element
 const usersTableBody = document.getElementById("usersTableBody");
+let nameFeild = document.querySelector("#nameFeild");
+let emailFeild = document.querySelector("#emailFeild");
+let userNameFeild = document.querySelector("#userNameFeild");
+let inputFeildButton = document.querySelector("#inputFeildButton");
+let urlParams = new URLSearchParams(location.search);
 
 //write function
 function loadUsersTable(users) {
@@ -81,6 +86,47 @@ async function deleteUser(row) {
   location.reload();
 }
 
+function editUserData() {
+  let id = -1;
+  if (urlParams.has("id") === true) {
+    id = urlParams.get("id");
+    fetch(`http://localhost:3000/users/${id}`)
+      .then((response) => response.json())
+      .then((user) => {
+        nameFeild.value = user.name;
+        emailFeild.value = user.email;
+        userNameFeild.value = user.username;
+      });
+  }
+}
+
+function editUser() {
+  let newNameFeild2 = nameFeild.value;
+  let newEmailFeild2 = emailFeild.value;
+  let newUserNameFeild2 = userNameFeild.value;
+  let newStreetFeild2 = streetFeild.value;
+  let newCityFeild2 = cityFeild.value;
+
+  const editedUser = {
+    name: `${newNameFeild2}`,
+    email: `${newEmailFeild2}`,
+    username: `${newUserNameFeild2}`,
+    //had to add new object to get it listed in table
+  };
+  let id = urlParams.get("id");
+  fetch(`http://localhost:3000/users/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(editedUser),
+  })
+    .then((response) => response.json())
+    .then((editedUser) => {
+      window.location.href = "users.html";
+    });
+}
+
+
+
 function initialize() {
   let users = fetch("http://localhost:3000/users");
 
@@ -92,3 +138,11 @@ function initialize() {
 }
 
 window.onload = initialize;
+editUserData();
+inputFeildButton.onclick = editUser;
+
+
+
+//bring in user id data from clicking the edit link
+
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courses</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="list.html" class="active">Courses</a>
+      </nav>
+    </header>
+    <main>
+      <h3>Edit Course</h3>
+      <form>
+        <label for="courseNumberInput"> Course Number</label>
+        <input type="text" id="courseNumberInput" />
+
+        <label for="courseNameInput">Course Name</label>
+        <input type="text" id="courseNameInput" />
+
+        <label for="departmentList">Department</label>
+        <select id="departmentList">
+          <option value="">Select...</option>
+          <option value="CompSci">CompSci</option>
+          <option value="English">English</option>
+          <option value="Finance">Finance</option>
+        </select>
+
+        <label for="instructorInput">Instructor</label>
+        <input type="text" id="instructorInput" />
+
+        <label for="startDateInput">Start Date</label>
+        <input type="text" id="startDateInput" />
+
+        <label for="numberOfDaysInput">Number Of Days</label>
+        <input type="number" id="numberOfDaysInput" />
+
+        <section class="actions">
+          <button id="saveButton" type="button">Save</button>
+          <a href="list.html">cancel</a>
+        </section>
+      </form>
+    </main>
+    <script>
+      const courseNumberInput = document.querySelector("#courseNumberInput");
+      const courseNameInput = document.querySelector("#courseNameInput");
+      const departmentList = document.querySelector("#departmentList");
+      const instructorInput = document.querySelector("#instructorInput");
+      const startDateInput = document.querySelector("#startDateInput");
+      const numberOfDaysInput = document.querySelector("#numberOfDaysInput");
+      const saveButton = document.querySelector("#saveButton");
+
+      function formToCourse() {
+        let course = {
+          dept: departmentList.value,
+          courseNum: courseNumberInput.value,
+          courseName: courseNameInput.value,
+          instructor: instructorInput.value,
+          startDate: startDateInput.value,
+          numDays: numberOfDaysInput.value,
+        };
+        course.id = getCourseIdFromParams();
+        return course;
+      }
+
+      function courseToForm(course) {
+        departmentList.value = course.dept;
+        courseNumberInput.value = course.courseNum;
+        courseNameInput.value = course.courseName;
+        instructorInput.value = course.instructor;
+        startDateInput.value = course.startDate;
+        numberOfDaysInput.value = course.numDays;
+      }
+
+      function getCourseIdFromParams() {
+        const params = new URLSearchParams(location.search);
+        const courseId = params.get("courseId");
+        return courseId;
+      }
+
+      function loadCourse() {
+        const courseId = getCourseIdFromParams();
+
+        fetch(`http://localhost:3000/courses/${courseId}`)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (course) {
+            courseToForm(course);
+          });
+      }
+
+      function saveCourse() {
+        const course = formToCourse();
+        fetch(`http://localhost:3000/courses/${course.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(course),
+        }).then(function (response) {
+          sessionStorage.setItem("message", "Successfully saved.")
+          window.location.href = "list.html";
+        });
+      }
+
+      saveButton.onclick = saveCourse;
+
+      window.onload = function initialize() {
+        loadCourse();
+      };
+    </script>
+  </body>
+</html>
